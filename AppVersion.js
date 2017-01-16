@@ -105,10 +105,10 @@ function compareVersions(currentVersionNumber, newestVersionNumber) {
 	
 	if (currentVersionNumber.length >= 3 && newestVersionNumber.length >= 3) {
 		for(var i = 0 ; i < 3 ; i++){
-			if (parseInt(currentVersionNumber[0]) < parseInt(newestVersionNumber[0])) {
+			if (parseInt(currentVersionNumber[i]) < parseInt(newestVersionNumber[i])) {
 				log("Current version is older than the newest version");
 				return 'older';
-			}else if (parseInt(currentVersionNumber[0]) > parseInt(newestVersionNumber[0])) {
+			}else if (parseInt(currentVersionNumber[i]) > parseInt(newestVersionNumber[i])) {
 				log("Current version is newer than the newest version");
 				return 'newer';
 			}
