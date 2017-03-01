@@ -23,7 +23,7 @@ function hasHapticEngineCheck(){
 	if(OS_IOS){
 		if(parseInt(Titanium.Platform.version.split(".")[0])>=10){
 			log("Has iOS 10 or higher");
-			createGenerator();
+			createGenerators();
 			return true;
 		}else{
 			log("Has iOS 9 or lower");
@@ -36,22 +36,24 @@ function hasHapticEngineCheck(){
 		return false;
 	}
 }
-function createGenerator(){
-	generator = Ti.UI.iOS.createFeedbackGenerator({type:Ti.UI.iOS.FEEDBACK_GENERATOR_TYPE_SELECTION});
+function createGenerators(){
+	generatorSelection = Ti.UI.iOS.createFeedbackGenerator({type:Ti.UI.iOS.FEEDBACK_GENERATOR_TYPE_SELECTION});
+	generatorImpact = Ti.UI.iOS.createFeedbackGenerator({type:Ti.UI.iOS.FEEDBACK_GENERATOR_TYPE_IMPACT});
+	generatorNotification = Ti.UI.iOS.createFeedbackGenerator({type:Ti.UI.iOS.FEEDBACK_GENERATOR_TYPE_NOTIFICATION});
 	log("Created the generator");
 }
 
-var generator = null;
+var generatorSelection = null;
+var generatorImpact = null;
+var generatorNotification = null;
 var hasHapticEngine = hasHapticEngineCheck();
 
 function hapticFeedbackSelection(){
 	if(!hasHapticEngine){
 		return;
 	}
-	generator.setType(Ti.UI.iOS.FEEDBACK_GENERATOR_TYPE_SELECTION);
-	generator.style = null;
-	generator.prepare();
-	generator.selectionChanged();
+	generatorSelection.prepare();
+	generatorSelection.selectionChanged();
 	log("Haptic Selection ");
 }
 exports.hapticFeedbackSelection = hapticFeedbackSelection;
@@ -68,10 +70,8 @@ function hapticFeedbackNotification(notification_type){
 		notification_type = Titanium.UI.iOS.FEEDBACK_GENERATOR_NOTIFICATION_TYPE_ERROR;
 	}
 	
-	generator.setType(Titanium.UI.iOS.FEEDBACK_GENERATOR_TYPE_NOTIFICATION);
-	generator.style = null;
-	generator.prepare();
-	generator.notificationOccurred(notification_type);
+	generatorNotification.prepare();
+	generatorNotification.notificationOccurred(notification_type);
 	log("Haptic Notification "+notification_type);
 }
 exports.hapticFeedbackNotification = hapticFeedbackNotification;
@@ -88,10 +88,9 @@ function hapticFeedbackImpact(impact_type){
 		impact_type = Titanium.UI.iOS.FEEDBACK_GENERATOR_IMPACT_STYLE_HEAVY;
 	}
 	
-	generator.setType(Titanium.UI.iOS.FEEDBACK_GENERATOR_TYPE_IMPACT);
-	generator.style = impact_type;
-	generator.prepare();
-	generator.impactOccurred();
+	generatorImpact.style = impact_type;
+	generatorImpact.prepare();
+	generatorImpact.impactOccurred();
 	log("Haptic Impact "+impact_type);
 }
 exports.hapticFeedbackImpact = hapticFeedbackImpact;
