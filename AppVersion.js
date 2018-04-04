@@ -71,11 +71,12 @@ function getPlayStoreVersion(cb) {
 	var client = Ti.Network.createHTTPClient({
 		onload : function(e) {
 			var response = this.responseText;
-			if (response.indexOf('"softwareVersion">') !== -1) {
-				response = response.split('"softwareVersion">')[1];
-				response = response.split("<")[0];
+
+			if (response.indexOf('Current Version') !== -1) {
+				response = response.split('Current Version</div>')[1];
+				response = response.split('">')[1];
+				response = response.split('<')[0];
 				response = response.trim();
-				log("Play Store version "+response)
 				cb && cb(getCurrentVersion(), response);
 			} else {
 				log("Version not on page in this layout");
