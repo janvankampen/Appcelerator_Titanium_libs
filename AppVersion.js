@@ -70,13 +70,11 @@ function getPlayStoreVersion(cb) {
 	var url = "https://play.google.com/store/apps/details?id="+PlayStoreId;
 	var client = Ti.Network.createHTTPClient({
 		onload : function(e) {
-			var response = this.responseText;
+			var response = String(this.responseData);
 
 			if (response.indexOf('Current Version') !== -1) {
-				response = response.split('Current Version</div>')[1];
-				response = response.split('">')[1];
-				response = response.split('<')[0];
-				response = response.trim();
+				var regularExpression = /\d+\.\d+\.\d+(?=<\/span><\/div><\/span><\/div>)/;
+				response = regularExpression.exec(response)[0];
 				log("Play Store version " + response);
 				cb && cb(getCurrentVersion(), response);
 			} else {
